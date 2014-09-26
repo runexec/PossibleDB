@@ -58,3 +58,5 @@ Maven
 # Documentation
 
 PossibleDB is the bridge between DataScript and RethinkDB. Please refer to https://github.com/tonsky/datascript
+
+Eclipse Public License - v 1.0
