@@ -52,3 +52,7 @@ Maven
 <version>1.0</version>
 </dependency>
 ```
+
+# Documentation
+
+PossibleDB is the bridge between DataScript and RethinkDB. Please refer to https://github.com/tonsky/datascript
