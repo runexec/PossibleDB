@@ -335,7 +335,7 @@
                            reader/read-string)]
 
               (try
-                (let [[action db data] safe
+                (let [[action db & args] safe
                       db (str db)
                       write! (fn [data]
                                (let [data (.toString data "utf8")]
@@ -346,26 +346,33 @@
                     (case (str action)
                       
                       ;; get the entire database
-                      "get" (possibledb-get-db! db
-                                                (fn [db]
-                                                  (let [conn @db]
-                                                    (write!
-                                                     
-                                                     ;; remove type for reading
-                                                     (zipmap (keys conn) (vals conn))))))
+                      "get"
+                      (possibledb-get-db! db
+                                          (fn [db]
+                                            (let [conn @db]
+                                              (write!
+                                               
+                                               ;; remove type for reading
+                                               (zipmap (keys conn) (vals conn))))))
 
-                      "create!" (possibledb-create-db! db
-                                                       (fn [x]
-                                                         (write! x)))
-                      "query" (possibledb-q db
-                                            data
-                                            (fn [result]
-                                              (write! result)))
+                      "create!"
+                      (possibledb-create-db! db
+                                             (fn [x]
+                                               (write! x)))
+                      "query"
+                      (let [data (first args)]
+                        (possibledb-q db
+                                      data
+                                      (fn [result]
+                                        (write! result))))
 
-                      "transact!" (possibledb-transact! db
-                                                        data
-                                                        (fn [result]
-                                                          (write! result)))))
+                      "transact!"
+                      (let [data (first args)]
+                        (possibledb-transact! db
+                                              data
+                                              (fn [result]
+                                                (write! result))))))
+
                   (catch js/Object ex
                     (println ex "input =>" safe)
                     (.end socket))))
