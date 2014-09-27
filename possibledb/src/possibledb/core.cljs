@@ -60,7 +60,7 @@
               JSON/stringify
               JSON/parse))
 
-        ;; used when the main-fn is reader_typesy to run
+        ;; used when the main-fn is ready to run
         (def ch-ready (chan))
 
         ;; owned by pub-main
