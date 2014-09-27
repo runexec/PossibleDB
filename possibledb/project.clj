@@ -1,12 +1,13 @@
 
-(defproject possibledb "0.1.0-SNAPSHOT"
-  :description "FIXME: write this!"
-  :url "http://example.com/FIXME"
-
+(defproject possibledb "0.1"
+  :description "PossibleDB is a Datomic Database Server clone built with DataScript, RethinkDB, Clojure, ClojureScript, and NodeJS."
+  :url "http://github.com/runexec/PossibleDB"
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2342"]
-                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]                 
-                 [com.cognitect/transit-cljs "0.8.188"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 
+                 ;; [com.cognitect/transit-cljs "0.8.188"]
+                 
                  [datascript "0.4.1"]
                  [org.bodil/cljs-noderepl "0.1.11"]
                  [com.cemerick/piggieback "0.1.3"]]
