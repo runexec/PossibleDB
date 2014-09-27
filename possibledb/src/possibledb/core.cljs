@@ -347,27 +347,25 @@
                       
                       ;; get the entire database
                       "get" (possibledb-get-db! db
-                                          (fn [db]
-                                            (let [conn @db]
-                                              (write!
-                                               
-                                               ;; remove type for reading
-                                               (zipmap (keys conn) (vals conn))))))
+                                                (fn [db]
+                                                  (let [conn @db]
+                                                    (write!
+                                                     
+                                                     ;; remove type for reading
+                                                     (zipmap (keys conn) (vals conn))))))
 
                       "create!" (possibledb-create-db! db
-                                                 (fn [x]
-                                                   (write! x)))
+                                                       (fn [x]
+                                                         (write! x)))
                       "query" (possibledb-q db
-                                      data
-                                      (fn [result]
-                                        (write! result)))
+                                            data
+                                            (fn [result]
+                                              (write! result)))
 
-                      "transact!" (possibledb-transact!
-                                   db
-                                   data
-                                   (fn [result]
-                                     (write! result)))))
-
+                      "transact!" (possibledb-transact! db
+                                                        data
+                                                        (fn [result]
+                                                          (write! result)))))
                   (catch js/Object ex
                     (println ex "input =>" safe)
                     (.end socket))))
