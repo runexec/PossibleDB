@@ -2,20 +2,24 @@
 
 <table>
   <tr>
-  <td>Server > 0.1</td>
-  <td>Compatible client - possibledb-client > 1.0</td>
+  <td><b>Server > 0.1</b></td>
+  <td><b>Compatible client - possibledb-client > 1.0</b></td>
   </tr>
   <tr>
   <!-- server -->
   <td>
-  * set proper information in project.clj
-  * removed unused transit-cljs
-  * schema support
+    <b>*</b> set proper information in project.clj
+    <br />
+    <b>*</b> removed unused transit-cljs
+    <br />
+    <b>*</b> schema support
   </td>
   <!-- client -->
-  <td>
-  * set proper information in project.clj
-  * schema support  
+  <td>    
+    <b>*</b> set proper information in project.clj
+    <br />
+    <b>*</b>schema support
+    <br />
   </td>
   </tr>
 </table>
