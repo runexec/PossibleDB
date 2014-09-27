@@ -7,9 +7,11 @@ PossibleDB is a Datomic Database Server clone built with DataScript, RethinkDB, 
 
 *WARNING: HIGHLY ALPHA*
 
-You can see PossibleDB in action @ http://vimeo.com/107237345
+You can see PossibleDB in action 
+@ http://vimeo.com/107237345
 
-Contributions and active development branch @ https://github.com/runexec/PossibleDB/tree/development
+Contributions and active development branch 
+@ https://github.com/runexec/PossibleDB/tree/dev
 
 ## PossibleDB Server
 
@@ -69,5 +71,7 @@ Datomic - http://docs.datomic.com/
 DataScript - https://github.com/tonsky/datascript
 
 RethinkDB - http://rethinkdb.com/
+
+# License 
 
 Eclipse Public License - v 1.0
