@@ -356,9 +356,10 @@
                                                (zipmap (keys conn) (vals conn))))))
 
                       "create!"
-                      (possibledb-create-db! db
-                                             (fn [x]
-                                               (write! x)))
+                      (let [schema (or (first args) {})]
+                        (possibledb-create-db! db
+                                               schema
+                                               write!))
                       "query"
                       (let [data (first args)]
                         (possibledb-q db

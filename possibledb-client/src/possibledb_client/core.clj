@@ -49,7 +49,11 @@
            db-name
            (doall data-coll))))
 
-(defn create-db! [^:String db-name]
-  (possibledb-call
-     (format "[create! %s]"
-             db-name)))
+(defn create-db!
+  ([^:String db-name]
+     (create-db! db-name {}))
+  ([^:String db-name ^:HashMap schema]
+     (possibledb-call
+      (format "[create! %s %s]"
+              db-name
+              schema))))

@@ -27,6 +27,26 @@ Contributions and active development branch
 
 ## Clojure Client
 
+#### client > 1.0
+
+```clojure
+
+(:require [possibledb-client.core :as db])
+
+(db/connect! [host port])
+
+(db/q [^:String db-name query-coll])
+
+(db/transact! [^:String db-name data-coll])
+
+(db/create-db!
+  ([^:String db-name])
+  ([^:String db-name ^:HashMap schema]))
+
+```
+
+#### client 1.0
+
 ```clojure
 
 (:require [possibledb-client.core :as db])
