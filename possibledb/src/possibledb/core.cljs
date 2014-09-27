@@ -349,11 +349,19 @@
                       "get"
                       (possibledb-get-db! db
                                           (fn [db]
-                                            (let [conn @db]
-                                              (write!
-                                               
-                                               ;; remove type for reading
-                                               (zipmap (keys conn) (vals conn))))))
+                                            (let [conn @db
+                                                  
+                                                  ;; remove type for reading
+                                                  conn (zipmap (keys conn) (vals conn))
+                                                  
+                                                  ;; remove children type
+                                                  vs (mapv (fn [x]
+                                                             (if-not (set? x)
+                                                               x
+                                                               (map #(into [] %) x)))
+                                                           (vals conn))
+                                                  conn (zipmap (keys conn) vs)]
+                                              (write! conn))))
 
                       "create!"
                       (let [schema (or (first args) {})]

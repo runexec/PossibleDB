@@ -35,6 +35,8 @@ Contributions and active development branch
 
 (db/connect! [host port])
 
+(db/get [^:String db-name])
+
 (db/q [^:String db-name query-coll])
 
 (db/transact! [^:String db-name data-coll])
