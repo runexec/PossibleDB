@@ -16,15 +16,19 @@
         (node/enable-util-print!)
 
         ;; needed for reading config files
+        
         (def fs (node/require "fs"))
 
         ;; rethinkdb backs everything
+        
         (def r (node/require "rethinkdb"))
 
         ;; net socket for requests
+        
         (def net (node/require "net"))
 
         ;; altered, but not added kv pairs
+        
         (def app
           (atom
            {:possibledb-table "databases"
@@ -34,6 +38,7 @@
 
         ;; each db is actually a single row in a single table
         ;; and this is the prefix for the main table
+        
         (def possibledb-rethinkdb-prefix "possibledb_")
 
         (defn possibledb-table-name [name]
@@ -42,6 +47,7 @@
                      "_"))
 
         ;; prefix for all non-main tables within the db
+        
         (def possibledb-db-prefix "possibledb_db_")
 
         (defn possibledb-db-name [name]
@@ -50,10 +56,12 @@
                      "_"))
 
         ;; returns main table
+        
         (defn rethinkdb-possibledb-table []
           (-> @app :possibledb-table possibledb-table-name))
 
         ;; clj->js has a bug for datoms => workaround is used later
+        
         (defn clj->json [x]
           (-> x
               clj->js
@@ -61,12 +69,15 @@
               JSON/parse))
 
         ;; used when the main-fn is ready to run
+        
         (def ch-ready (chan))
 
         ;; owned by pub-main
+        
         (def ch-main (chan))
 
-        ;; pub fn is key of single key hashmaps 
+        ;; pub fn is key of single key hashmaps
+        
         (def pub-main (pub ch-main (comp key first)))
 
         (def config-file (:config-file @app))
@@ -79,6 +90,7 @@
             (JSON/parse data)))
 
         ;; load config
+        
         (let [c (chan)]
           (sub pub-main :load-config c)
           
@@ -86,12 +98,15 @@
             (println "Loading RethinkDB config from " config-file)
             
             ;; load configuration file
+            
             (let [json (load-config! config-file)]
 
               ;; set configuration
+              
               (swap! app assoc :reathinkdb-config json)
               
               ;; unsub and don't recur
+              
               (unsub pub-main :load-config c)
 
               (>! ch-ready true))))
@@ -112,6 +127,7 @@
           (re-find #"already exists" (str err)))
 
         ;; make rethinkdb connection
+        
         (let [c (chan)]  
           (sub pub-main :rethinkdb-create-connection c)
 
@@ -119,6 +135,7 @@
             (println "Creating RethinkDB connection")
             
             ;; create connection for rethinkdb
+            
             (doto r
               (.connect (rethinkdb-config)
                         (fn [err conn]
@@ -131,6 +148,7 @@
             (unsub pub-main :rethinkdb-create-connection c)))
 
         ;; check/create rethinkdb database
+        
         (let [c (chan)]
           (sub pub-main :rethinkdb-create-db c)
           
@@ -154,9 +172,11 @@
               (catch js/Object ex (println ex)))
 
             ;; no recur
+            
             (unsub pub-main :rethinkdb-create-db c)))
         
         ;; create rethink-db POSSIBLEDB table(s)
+        
         (let [c (chan)]
           (sub pub-main :create-possibledb-tables c)
 
@@ -182,6 +202,7 @@
               (catch js/Object ex (println ex)))
 
             ;; no recur
+            
             (unsub pub-main :create-possibledb-tables c)))
 
         (defn rethinkdb-insert-possibledb!
@@ -344,6 +365,7 @@
             (let [[socket data] (-> c <! :incoming)
                   
                   ;; needed to be evaluated so must remove parens
+                  
                   safe (-> data
                            (.toString "utf8")
                            (s/replace #"\(" "")
@@ -362,15 +384,18 @@
                     (case (str action)
                       
                       ;; get the entire database
+                      
                       "get"
                       (possibledb-get-db! db
                                           (fn [db]
                                             (let [conn @db
                                                   
                                                   ;; remove type for reading
+                                                  
                                                   conn (zipmap (keys conn) (vals conn))
                                                   
                                                   ;; remove children type
+                                                  
                                                   vs (mapv (fn [x]
                                                              (if-not (set? x)
                                                                x
@@ -412,20 +437,24 @@
         
         (go
           ;; load rethinkdb json config
+          
           (>! ch-main
               {:load-config config-file})
           
           ;; park until ready, connect to rethink db
+          
           (if (<! ch-ready)
             (>! ch-main
                 {:rethinkdb-create-connection true}))
           
           ;; park until ready, create main db
+          
           (if (<! ch-ready)
             (>! ch-main
                 {:rethinkdb-create-db true}))
 
           ;; park until ready, create possibledb databases table
+          
           (if (<! ch-ready)
             (>! ch-main
                 {:create-possibledb-tables true})))
@@ -443,15 +472,3 @@
                             (put! ch-main {:incoming [socket data]}))))))
               
               (.listen port)))))
-
-
-
-          ;; (when (<! ch-ready)
-          ;;   (possibledb-create-db! "example")
-          ;;   (<! (timeout 1000))            
-          ;;   (possibledb-transact! "example"
-          ;;                   [{:db/id -1 :name "user1"}])
-          ;;   (<! (timeout 1000))
-          ;;   (possibledb-q "example"
-          ;;           '[:find ?n
-          ;;             :where [?e :name ?n]])))))
