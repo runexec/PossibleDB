@@ -27,7 +27,7 @@ Contributions and active development branch
 
 ## Clojure Client
 
-#### Client 1.3 for Server 0.1-3
+#### Client 1.4 for Server 0.1-3
 
 ```clojure
 
@@ -52,6 +52,10 @@ Contributions and active development branch
 
 (db/destroy-db!
   [^:String db-name])
+
+(db/backup-db!
+ [^:String db-name
+  ^:String save-file-path])
 
 ```
 

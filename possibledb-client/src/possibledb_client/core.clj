@@ -58,7 +58,8 @@
 (defn create-db!
   ([^:String db-name]
      (create-db! db-name {}))
-  ([^:String db-name ^:HashMap schema]
+  ([^:String db-name
+    ^:HashMap schema]
      (possibledb-call
       (format "[create! %s %s]"
               db-name
@@ -69,3 +70,14 @@
   (possibledb-call
    (format "[destroy! %s]"
            db-name)))
+
+(defn backup-db!
+  [^:String db-name
+   ^:String save-file-path]
+  (with-open  [w (clojure.java.io/writer save-file-path
+                                         :encoding "UTF-8")]
+    (.write w
+            (->> db-name
+                 get
+                 str
+                 char-array))))

@@ -4,7 +4,7 @@
 <table>
   <tr>
   <td><b>Server  0.1-3</b></td>
-  <td><b>Compatible client - possibledb-client 1.3</b></td>
+  <td><b>Compatible client - possibledb-client 1.4</b></td>
   </tr>
   <tr>
   <!-- server -->
@@ -26,6 +26,8 @@
     <b>*</b> schema support
     <br />
     <b>*</b> new destroy-db! fn
+    <br />
+    <b>*</b> new backup-db! fn
   </td>
   </tr>
 </table>
