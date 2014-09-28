@@ -1,4 +1,4 @@
-(defproject possibledb-client "1.1"
+(defproject possibledb-client "1.3"
   :description "Clojure client for PossibleDB"
   :url "http://github.com/runexec/PossibleDB"
   :license {:name "Eclipse Public License"

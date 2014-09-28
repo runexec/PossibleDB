@@ -16,7 +16,8 @@
 (defn reload-conn! []
   (apply connect! @reload-conn))
 
-(defn possibledb-call [^:String call]
+(defn possibledb-call
+  [^:String call]
   (let [c @connection]    
     (with-open [in (clojure.java.io/reader c)                
                 out (clojure.java.io/writer c)
@@ -32,18 +33,23 @@
             (read-string
              response)))))))
 
-(defn get [^:String db-name]
+(defn get
+  [^:String db-name]
   (possibledb-call
    (format "[get %s]"
            db-name)))
 
-(defn q [^:String db-name query-coll]
+(defn q
+  [^:String db-name
+   query-coll]
     (possibledb-call
      (format "[query %s %s]"
              db-name
              (doall query-coll))))
 
-(defn transact! [^:String db-name data-coll]
+(defn transact!
+  [^:String db-name
+   data-coll]
   (possibledb-call
    (format "[transact! %s %s]"
            db-name
@@ -57,3 +63,9 @@
       (format "[create! %s %s]"
               db-name
               schema))))
+
+(defn destroy-db!
+  [^:String db-name]
+  (possibledb-call
+   (format "[destroy! %s]"
+           db-name)))

@@ -27,7 +27,7 @@ Contributions and active development branch
 
 ## Clojure Client
 
-#### client > 1.0
+#### Client 1.3 for Server 0.1-3
 
 ```clojure
 
@@ -35,19 +35,27 @@ Contributions and active development branch
 
 (db/connect! [host port])
 
-(db/get [^:String db-name])
+(db/get
+  [^:String db-name])
 
-(db/q [^:String db-name query-coll])
+(db/q
+  [^:String db-name])
 
-(db/transact! [^:String db-name data-coll])
+(db/transact!
+  [^:String db-name])
+
 
 (db/create-db!
   ([^:String db-name])
   ([^:String db-name ^:HashMap schema]))
 
+
+(db/destroy-db!
+  [^:String db-name])
+
 ```
 
-#### client 1.0
+#### client 1.0 for Server 0.1
 
 ```clojure
 
@@ -55,11 +63,16 @@ Contributions and active development branch
 
 (db/connect! [host port])
 
-(db/q [^:String db-name query-coll])
+(db/q
+ [^:String db-name
+  query-coll])
 
-(db/transact! [^:String db-name data-coll])
+(db/transact!
+ [^:String db-name
+  data-coll])
 
-(db/create-db! [^:String db-name])
+(db/create-db!
+ [^:String db-name])
 
 ```
 

@@ -215,6 +215,22 @@
                                (cb x)
                                (put! ch-ready true)))))))))
 
+        (defn possibledb-destroy-db!
+          [name cb]
+          (let [name (possibledb-db-name name)
+                db-name (rethinkdb-config "db")]
+            (-> r
+                (.db db-name)
+                (.tableDrop name)
+                (.run (rethinkdb-conn)
+                      (fn [err msg]
+                        (if-not err
+                          (cb true)
+                          (do
+                            (println "Couldn't destroy POSSIBLEDB "
+                                     name "\n - \n" err)
+                            (cb false))))))))
+
         (defn possibledb-get-db!
           [name cb]
           (let [name (possibledb-db-name name)
@@ -368,6 +384,11 @@
                         (possibledb-create-db! db
                                                schema
                                                write!))
+
+                      "destroy!"
+                      (possibledb-destroy-db! db
+                                              write!)
+                      
                       "query"
                       (let [data (first args)]
                         (possibledb-q db

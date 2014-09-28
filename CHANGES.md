@@ -1,10 +1,10 @@
 
-### PossibleDB > 0.1
+# PossibleDB Server / Clojure Client
 
 <table>
   <tr>
-  <td><b>Server > 0.1</b></td>
-  <td><b>Compatible client - possibledb-client > 1.0</b></td>
+  <td><b>Server  0.1-3</b></td>
+  <td><b>Compatible client - possibledb-client 1.3</b></td>
   </tr>
   <tr>
   <!-- server -->
@@ -16,6 +16,8 @@
     <b>*</b> schema support
     <br />
     <b>*</b> fixed get fn - no longer crashes client    
+    <br />
+    <b>*</b> destroy db support
   </td>
   <!-- client -->
   <td>    
@@ -23,6 +25,7 @@
     <br />
     <b>*</b> schema support
     <br />
+    <b>*</b> new destroy-db! fn
   </td>
   </tr>
 </table>
