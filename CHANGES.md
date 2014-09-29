@@ -3,8 +3,8 @@
 
 <table>
   <tr>
-  <td><b>Server  0.1-3</b></td>
-  <td><b>Compatible client - possibledb-client 1.4</b></td>
+  <td><b>Server  0.1-4</b></td>
+  <td><b>Compatible client - possibledb-client 1.5</b></td>
   </tr>
   <tr>
   <!-- server -->
