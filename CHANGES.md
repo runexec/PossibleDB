@@ -18,6 +18,8 @@
     <b>*</b> fixed get fn - no longer crashes client    
     <br />
     <b>*</b> destroy db support
+	<br />
+    <b>*</b> spawn db support
   </td>
   <!-- client -->
   <td>    
@@ -28,6 +30,8 @@
     <b>*</b> new destroy-db! fn
     <br />
     <b>*</b> new backup-db! fn
+	<br />
+    <b>*</b> new spawn-db! fn
   </td>
   </tr>
 </table>

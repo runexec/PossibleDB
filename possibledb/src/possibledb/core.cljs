@@ -222,8 +222,8 @@
           ([name schema cb]  
              (go-loop [name (possibledb-db-name name)
                        possibledb-db (if schema
-                                 (d/create-conn schema)
-                                 (d/create-conn))]
+                                       (d/create-conn schema)
+                                       (d/create-conn))]
                (-> r
                    (.tableCreate name)
                    (.run (rethinkdb-conn)
@@ -298,8 +298,8 @@
           
           (defn possibledb-transact! [name data cb]
             (possibledb-get-db! name
-                          (fn [conn]
-                            (put! c [name conn data cb]))))
+                                (fn [conn]
+                                  (put! c [name conn data cb]))))
 
           (go-loop []
             (let [[name conn data cb] (<! c)
@@ -348,16 +348,55 @@
 
           (defn possibledb-q [name q cb]
             (possibledb-get-db! name
-                          (fn [conn]
-                            (put! c [conn q cb]))))
+                                (fn [conn]
+                                  (put! c [conn q cb]))))
 
           (go-loop []
             (let [[conn q cb] (<! c)]
               (cb
                (d/q q @conn)))
             (recur)))
-        
 
+          (defn possibledb-spawn!  
+            [name1 name2 cb]
+            (go-loop []
+              (let [n1 (possibledb-db-name name1)
+                    n2 (possibledb-db-name name2)
+                    ready (chan)
+                    db (rethinkdb-config "db")
+                    data-promise (-> r
+                                     (.db db)
+                                     (.table n1)
+                                     (.getAll n1))
+                    e #(do
+                         (println
+                          (str "Failed to spawn "
+                               n2
+                               " from "
+                               n2
+                               " " n1))
+                         (put! ready false)
+                         (cb false))]
+                (-> r
+                    (.db db)
+                    (.tableCreate n2)
+                    (.run (rethinkdb-conn)
+                          (fn [err _]
+                            (if-not err
+                              (put! ready true)
+                              (e err)))))
+
+                (if (<! ready)
+                  (-> r
+                      (.db db)
+                      (.table n2)
+                      (.insert data-promise)
+                      (.run (rethinkdb-conn)
+                            (fn [err _]
+                              (if-not err
+                                (cb true)
+                                (e err)))))))))
+          
         (let [c (chan)]
           (sub pub-main :incoming c)
 
@@ -380,58 +419,63 @@
                                  (doto socket
                                    (.write data)
                                    .end)))]
+                  
+                  (case (str action)
                     
-                    (case (str action)
-                      
-                      ;; get the entire database
-                      
-                      "get"
-                      (possibledb-get-db! db
-                                          (fn [db]
-                                            (let [conn @db
-                                                  
-                                                  ;; remove type for reading
-                                                  
-                                                  conn (zipmap (keys conn) (vals conn))
-                                                  
-                                                  ;; remove children type
-                                                  
-                                                  vs (mapv (fn [x]
-                                                             (if-not (set? x)
-                                                               x
-                                                               (map #(into [] %) x)))
-                                                           (vals conn))
-                                                  conn (zipmap (keys conn) vs)]
-                                              (write! conn))))
+                    ;; get the entire database
+                    
+                    "get"
+                    (possibledb-get-db! db
+                                        (fn [db]
+                                          (let [conn @db
+                                                
+                                                ;; remove type for reading
+                                                
+                                                conn (zipmap (keys conn)
+                                                             (vals conn))
+                                                
+                                                ;; remove children type
+                                                
+                                                vs (mapv (fn [x]
+                                                           (if-not (set? x)
+                                                             x
+                                                             (map #(into [] %) x)))
+                                                         (vals conn))
+                                                conn (zipmap (keys conn) vs)]
+                                            (write! conn))))
 
-                      "create!"
-                      (let [schema (or (first args) {})]
-                        (possibledb-create-db! db
-                                               schema
-                                               write!))
+                    "create!"
+                    (let [schema (or (first args) {})]
+                      (possibledb-create-db! db
+                                             schema
+                                             write!))
 
-                      "destroy!"
-                      (possibledb-destroy-db! db
-                                              write!)
-                      
-                      "query"
-                      (let [data (first args)]
-                        (possibledb-q db
-                                      data
-                                      (fn [result]
-                                        (write! result))))
+                    "destroy!"
+                    (possibledb-destroy-db! db
+                                            write!)
+                    
+                    "query"
+                    (let [data (first args)]
+                      (possibledb-q db
+                                    data
+                                    (fn [result]
+                                      (write! result))))
 
-                      "transact!"
-                      (let [data (first args)]
-                        (possibledb-transact! db
-                                              data
-                                              (fn [result]
-                                                (write! result))))))
+                    "transact!"
+                    (let [data (first args)]
+                      (possibledb-transact! db
+                                            data
+                                            (fn [result]
+                                              (write! result))))
 
-                  (catch js/Object ex
-                    (println ex "input =>" safe)
-                    (.end socket))))
-                      
+                    "spawn!"
+                    (let [to-db (first args)]
+                      (possibledb-spawn! db to-db write!))))
+
+                (catch js/Object ex
+                  (println ex "input =>" safe)
+                  (.end socket))))
+            
             (recur)))
         
         

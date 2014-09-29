@@ -81,3 +81,10 @@
                  get
                  str
                  char-array))))
+(defn spawn-db!
+  [^:String original-db-name
+   ^:String new-db-name]
+  (possibledb-call
+   (format "[spawn! %s %s]"
+           original-db-name
+           new-db-name)))
