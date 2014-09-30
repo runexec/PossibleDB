@@ -3,7 +3,7 @@
 
 <table>
   <tr>
-  <td><b>Server  0.1-4</b></td>
+  <td><b>Server  0.1-5</b></td>
   <td><b>Compatible client - possibledb-client 1.5</b></td>
   </tr>
   <tr>
@@ -20,6 +20,8 @@
     <b>*</b> destroy db support
 	<br />
     <b>*</b> spawn db support
+	<br />
+    <b>*</b> fixed spawn db id issue - id didn't match parent table
   </td>
   <!-- client -->
   <td>    

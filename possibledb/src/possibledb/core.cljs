@@ -359,7 +359,7 @@
 
           (defn possibledb-spawn!  
             [name1 name2 cb]
-            (go-loop []
+            (go
               (let [n1 (possibledb-db-name name1)
                     n2 (possibledb-db-name name2)
                     ready (chan)
@@ -367,7 +367,8 @@
                     data-promise (-> r
                                      (.db db)
                                      (.table n1)
-                                     (.getAll n1))
+                                     (.get n1))
+
                     e #(do
                          (println
                           (str "Failed to spawn "
@@ -375,8 +376,16 @@
                                " from "
                                n2
                                " " n1))
-                         (put! ready false)
-                         (cb false))]
+                         (try
+                           (-> r
+                               (.db db)
+                               (.tableDrop n2)
+                               (.run (rethinkdb-conn)
+                                     (fn [& _])))
+                           (catch js/Object ex false)
+                           (finally 
+                             (put! ready false)
+                             (cb false))))]
                 (-> r
                     (.db db)
                     (.tableCreate n2)
@@ -391,6 +400,36 @@
                       (.db db)
                       (.table n2)
                       (.insert data-promise)
+                      (.run (rethinkdb-conn)
+                            (fn [err _]
+                              (if-not err
+                                (put! ready true)
+                                (e err))))))
+
+                (if (<! ready)
+                  (let [data-promise (-> r
+                                         (.db db)
+                                         (.table n2)
+                                         (.get n1)
+                                         (.pluck "data")
+                                         (.merge
+                                          (.object r "id" n2)))]
+                    (-> r
+                        (.db db)
+                        (.table n2)
+                        (.insert data-promise)
+                        (.run (rethinkdb-conn)
+                              (fn [err _]
+                                (if-not err
+                                  (put! ready true)
+                                  (e err)))))))
+
+                (if (<! ready)
+                  (-> r
+                      (.db db)
+                      (.table n2)
+                      (.get n1)
+                      .delete
                       (.run (rethinkdb-conn)
                             (fn [err _]
                               (if-not err
