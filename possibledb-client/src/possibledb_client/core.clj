@@ -88,3 +88,11 @@
    (format "[spawn! %s %s]"
            original-db-name
            new-db-name)))
+
+(defn reset-db!
+  ([^:String db-name]
+     (reset-db! db-name {}))
+  ([^:String db-name
+    ^:HashMap schema]
+     (destroy-db! db-name)
+     (create-db! db-name schema)))

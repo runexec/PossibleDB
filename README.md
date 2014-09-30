@@ -35,7 +35,7 @@ https://github.com/runexec/PossibleDB/releases
 
 ## Clojure Client
 
-#### Client 1.5 for Server 0.1-5
+#### Client 1.6 for Server 0.1-5
 
 ```clojure
 
@@ -44,29 +44,36 @@ https://github.com/runexec/PossibleDB/releases
 (db/connect! [host port])
 
 (db/get
-  [^:String db-name])
+ [^:String db-name])
 
 (db/q
-  [^:String db-name])
+ [^:String db-name])
 
 (db/transact!
-  [^:String db-name])
+ [^:String db-name])
 
 (db/create-db!
-  ([^:String db-name])
-  ([^:String db-name
-    ^:HashMap schema]))
+ ([^:String db-name])
+ ([^:String db-name
+   ^:HashMap schema]))
 
 (db/destroy-db!
-  [^:String db-name])
+ [^:String db-name])
 
 (db/backup-db!
  [^:String db-name
   ^:String save-file-path])
 
 (db/spawn-db!
-  [^:String original-db-name
-   ^:String new-db-name])
+ [^:String original-db-name
+  ^:String new-db-name])
+
+
+(db/reset-db!
+ ([^:String db-name]
+    (reset-db! db-name {}))
+ ([^:String db-name
+   ^:HashMap schema]))
   
 ```
 

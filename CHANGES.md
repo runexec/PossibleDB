@@ -4,7 +4,7 @@
 <table>
   <tr>
   <td><b>Server  0.1-5</b></td>
-  <td><b>Compatible client - possibledb-client 1.5</b></td>
+  <td><b>Compatible client - possibledb-client 1.6</b></td>
   </tr>
   <tr>
   <!-- server -->
@@ -34,6 +34,8 @@
     <b>*</b> new backup-db! fn
 	<br />
     <b>*</b> new spawn-db! fn
+	<br />
+    <b>*</b> new reset-db! fn
   </td>
   </tr>
 </table>
