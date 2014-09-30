@@ -68,10 +68,8 @@ https://github.com/runexec/PossibleDB/releases
  [^:String original-db-name
   ^:String new-db-name])
 
-
 (db/reset-db!
- ([^:String db-name]
-    (reset-db! db-name {}))
+ ([^:String db-name])
  ([^:String db-name
    ^:HashMap schema]))
   
