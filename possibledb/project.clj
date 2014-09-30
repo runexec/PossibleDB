@@ -1,5 +1,5 @@
 
-(defproject possibledb "0.1-4"
+(defproject possibledb "0.1-5"
   :description "PossibleDB is a Datomic Database Server clone built with DataScript, RethinkDB, Clojure, ClojureScript, and NodeJS."
   :url "http://github.com/runexec/PossibleDB"
   :dependencies [[org.clojure/clojure "1.6.0"]
