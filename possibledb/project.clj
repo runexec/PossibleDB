@@ -3,8 +3,8 @@
   :description "PossibleDB is a Datomic Database Server clone built with DataScript, RethinkDB, Clojure, ClojureScript, and NodeJS."
   :url "http://github.com/runexec/PossibleDB"
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2342"]
-                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 [org.clojure/clojurescript "0.0-2322"]
+                 [org.clojure/core.async "0.1.338.0-5c5012-alpha"]
                  
                  ;; [com.cognitect/transit-cljs "0.8.188"]
                  
@@ -33,4 +33,5 @@
               :compiler {:output-to "possibledb.js"
                          :output-dir "out"
                          :target :nodejs
+                         :source-map "possibledb.js.map"
                          :optimizations :simple}}]})
