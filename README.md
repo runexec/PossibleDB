@@ -35,7 +35,7 @@ https://github.com/runexec/PossibleDB/releases
 
 ## Clojure Client
 
-#### Client 1.6 for Server 0.1-5
+#### Client 1.6 for Server 0.1-6
 
 ```clojure
 
