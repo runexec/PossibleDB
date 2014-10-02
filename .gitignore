@@ -12,3 +12,4 @@ pom.xml.asc
 */out/*
 */node_modules/*
 *~
+*/test/out/*
