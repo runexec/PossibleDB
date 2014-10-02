@@ -1,5 +1,8 @@
 (ns test
+  (:require-macros
+   [cljs.core.async.macros :refer [go go-loop]])
   (:require
+   [cljs.core.async :refer [put! chan <!]]
    [cljs.nodejs :as node]
    [possibledb.core :as pdb]
    ;; nodejs chai
@@ -65,28 +68,84 @@
       
       (fn [& _]
 
-        (describe "PossibleDB RethinkDB Table Prefix")
-        
-        (e "possibledb-table-name fn"
-           :to.equal
-           (str pdb/possibledb-rethinkdb-prefix
-                "example_db")
-           (pdb/possibledb-table-name "example-db"))
+        ;; go-block needed for parking
+        (go
+
+          (describe "PossibleDB RethinkDB Table Prefix")
+          
+          (e "possibledb-table-name fn"
+             :to.equal
+             (str pdb/possibledb-rethinkdb-prefix
+                  "example_db")
+             (pdb/possibledb-table-name "example-db"))
 
 
-        (e "possibledb-db-name fn"
-           :to.equal
-           (str pdb/possibledb-db-prefix
-                "example_db")
-           (pdb/possibledb-db-name "example-db"))
+          (e "possibledb-db-name fn"
+             :to.equal
+             (str pdb/possibledb-db-prefix
+                  "example_db")
+             (pdb/possibledb-db-name "example-db"))
 
-        (describe "JSON Conversion Helper")
+          (describe "JSON Conversion Helper")
 
-        (e "clj->json fn"
-           :to.eql
-           (JSON/parse "{\"a\":1}")
-           (pdb/clj->json {:a 1}))
+          (e "clj->json fn"
+             :to.eql
+             (JSON/parse "{\"a\":1}")
+             (pdb/clj->json {:a 1}))
 
-        (results)))
+          (describe "Configuration Loading")
+          
+          (e "load-config! fn"
+             :to.equal
+             false
+             (nil?
+              (pdb/load-config! pdb/config-file)))
 
 
+          (put! pdb/ch-main
+                {:load-config pdb/config-file})
+          
+          ;; waiting
+          (<! pdb/ch-ready)
+                      
+          (e "sub pub-main :load-config"
+             :to.equal
+             false
+             (nil?
+              (:rethinkdb-config
+               (deref pdb/app))))
+
+          (e "rethinkdb-config [] fn"
+             :to.equal
+             false
+             (nil?
+              (pdb/rethinkdb-config)))
+
+          (e "rethinkdb-config [attr] fn"
+             :to.equal
+             false
+             (let [x (pdb/rethinkdb-config "host")]
+               (or (empty? x)
+                   (nil? x))))
+          
+          (describe "RethinkDB Connection Handlers")
+
+          (e "rethinkdb-conn-set!"
+             :to.eql
+             :xyz
+             (:rethinkdb-conn
+              (pdb/rethinkdb-conn-set! :xyz)))
+
+          (e "rethinkdb-conn"
+             :to.eql
+             :xyz
+             (pdb/rethinkdb-conn))
+
+          (e "rethinkdb-safe-error?"
+             :to.equal
+             "already exists"
+             (pdb/rethinkdb-safe-error? "Table-or-something already exists"))
+              
+
+          
+          (results))))
