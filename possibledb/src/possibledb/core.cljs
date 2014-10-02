@@ -515,35 +515,35 @@
     
     (recur)))
 
-
-(go
-  ;; load rethinkdb json config
-  
-  (>! ch-main
-      {:load-config config-file})
-  
-  ;; park until ready, connect to rethink db
-  
-  (if (<! ch-ready)
-    (>! ch-main
-        {:rethinkdb-create-connection true}))
-  
-  ;; park until ready, create main db
-  
-  (if (<! ch-ready)
-    (>! ch-main
-        {:rethinkdb-create-db true}))
-
-  ;; park until ready, create possibledb databases table
-  
-  (if (<! ch-ready)
-    (>! ch-main
-        {:create-possibledb-tables true})))
-
 (set! *main-cli-fn*
 
       (fn [& [port]]        
         
+        (go
+          ;; load rethinkdb json config
+          
+          (>! ch-main
+              {:load-config config-file})
+          
+          ;; park until ready, connect to rethink db
+          
+          (if (<! ch-ready)
+            (>! ch-main
+                {:rethinkdb-create-connection true}))
+          
+          ;; park until ready, create main db
+          
+          (if (<! ch-ready)
+            (>! ch-main
+                {:rethinkdb-create-db true}))
+
+          ;; park until ready, create possibledb databases table
+          
+          (if (<! ch-ready)
+            (>! ch-main
+                {:create-possibledb-tables true})))
+
+
         (let [port (or port 12345)]
           
           (println "Listening on " port)
