@@ -10,7 +10,8 @@
                  
                  [datascript "0.4.1"]
                  [org.bodil/cljs-noderepl "0.1.11"]
-                 [com.cemerick/piggieback "0.1.3"]]
+                 [com.cemerick/piggieback "0.1.3"]
+                 [chai-latte "0.2.0"]]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]]
 
@@ -27,11 +28,18 @@
   
   :source-paths ["src"]
 
+  :test-paths ["test"]
+  
   :cljsbuild {
-    :builds [{:id "strap"
-              :source-paths ["src"]
-              :compiler {:output-to "possibledb.js"
-                         :output-dir "out"
-                         :target :nodejs
-                         ;; :source-map "possibledb.js.map"
-                         :optimizations :simple}}]})
+              :builds {:strap
+                       {:source-paths ["src"]
+                        :compiler {:output-to "possibledb.js"
+                                   :output-dir "out"
+                                   :target :nodejs
+                                   :optimizations :simple}}
+                       :test
+                       {:source-paths ["test"]
+                        :compiler {:output-to "test.js"
+                                   :output-dir "test/out"
+                                   :target :nodejs
+                                   :optimizations :simple}}}})

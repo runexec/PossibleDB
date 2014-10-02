@@ -118,6 +118,16 @@ https://github.com/runexec/PossibleDB/releases
 
 PossibleDB is the bridge between DataScript and RethinkDB. Please refer to https://github.com/tonsky/datascript
 
+# Running Tests
+
+``bash
+cd possibledb/
+npm install chai
+lein do cljsbuild clean, cljsbuild once test
+chmod +x test.js; ./test.js
+```
+
+Tests are located in possibledb/test/core.cljs. A mini-framework based on latte-chai is used.
 
 # Important Links
 
@@ -126,6 +136,8 @@ Datomic - http://docs.datomic.com/
 DataScript - https://github.com/tonsky/datascript
 
 RethinkDB - http://rethinkdb.com/
+
+Latte Chai - https://github.com/contentjon/chai-latte
 
 # License 
 
