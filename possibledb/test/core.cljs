@@ -24,32 +24,43 @@
 
 (defn results []
   (let [data @tests]
-    (println "Failed: " (:failed-count data)
-             "\n"
-             "Passed: " (:passed-count data))))
+    (println
+     "\n"
+     (repeat 20 "=")
+     "\nFailed: " (:failed-count data)
+     "\nPassed: " (:passed-count data))))
 
 
 (defn describe [s]
   (println s))
 
 (defn it [s]
-  (print "\t" s ": "))
+  (println s))
 
 (defn e [it-str clause expected actual]
-  (let [passed (atom true)]
-    (it it-str)
+  (let [passed (atom true)
+        msg (atom false)]
     (try
       (expect expected clause actual)
+
       (catch js/Error err
         (let [m (.-message err)]
-          (println "FAIL\n" m)
           (failed!)
-          (swap! passed not)))
+          (print "\tFAIL: ")
+          (swap! passed not)
+          (reset! msg m)))
+
       (finally
         (when @passed
           (passed!)
-          (println "PASS"))))))
-    
+          (print "\tPASS: "))
+        
+        (it it-str)
+        
+        (if-let [m @msg]
+          (println "\t\t" m))))))
+
+
 (set! *main-cli-fn*
       
       (fn [& _]
@@ -61,6 +72,20 @@
            (str pdb/possibledb-rethinkdb-prefix
                 "example_db")
            (pdb/possibledb-table-name "example-db"))
+
+
+        (e "possibledb-db-name fn"
+           :to.equal
+           (str pdb/possibledb-db-prefix
+                "example_db")
+           (pdb/possibledb-db-name "example-db"))
+
+        (describe "JSON Conversion Helper")
+
+        (e "clj->json fn"
+           :to.eql
+           (JSON/parse "{\"a\":1}")
+           (pdb/clj->json {:a 1}))
 
         (results)))
 
