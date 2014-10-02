@@ -7,15 +7,10 @@ PossibleDB is a Datomic Database Server clone built with DataScript, RethinkDB, 
 
 *WARNING: HIGHLY ALPHA*
 
-[PossibleDB demo video](http://vimeo.com/107237345)
-
-[Active Developement Branch](https://github.com/runexec/PossibleDB/tree/dev)
-
-[Change Log](CHANGES.md)
-
-========
-
+[PossibleDB demo video](http://vimeo.com/107237345)<br />
+[Active Developement Branch](https://github.com/runexec/PossibleDB/tree/dev)<br />
 [Installing Latest Version](#possibledb-server-latest)<br />
+[Change Log](CHANGES.md)
 [Download Releases](#releases)<br />
 [Clojure Client API for all versions](#clojure-client)<br />
 [Documentation](#documentation)<br />
@@ -84,6 +79,11 @@ https://github.com/runexec/PossibleDB/releases
 
 #### client 1.0 for Server 0.1
 
+
+#### Leiningen
+
+```[possibledb-client "1.0"]```
+
 ```clojure
 
 (:require [possibledb-client.core :as db])
@@ -101,24 +101,6 @@ https://github.com/runexec/PossibleDB/releases
 (db/create-db!
  [^:String db-name])
 
-```
-
-#### Leiningen
-
-```[possibledb-client "1.0"]```
-
-#### Gradle
-
-```compile "possibledb-client:possibledb-client:1.0"```
-
-#### Maven
-
-```
-<dependency>
-<groupId>possibledb-client</groupId>
-<artifactId>possibledb-client</artifactId>
-<version>1.0</version>
-</dependency>
 ```
 
 # Documentation
