@@ -10,7 +10,7 @@ PossibleDB is a Datomic Database Server clone built with DataScript, RethinkDB, 
 [PossibleDB demo video](http://vimeo.com/107237345)<br />
 [Active Developement Branch](https://github.com/runexec/PossibleDB/tree/dev)<br />
 [Installing Latest Version](#possibledb-server-latest)<br />
-[Change Log](CHANGES.md)
+[Change Log](CHANGES.md)<br />
 [Download Releases](#releases)<br />
 [Clojure Client API for all versions](#clojure-client)<br />
 [Documentation](#documentation)<br />
