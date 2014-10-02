@@ -127,7 +127,7 @@ PossibleDB is the bridge between DataScript and RethinkDB. Please refer to https
 
 # Running Tests
 
-``bash
+```bash
 cd possibledb/
 npm install chai
 lein do cljsbuild clean, cljsbuild once test
