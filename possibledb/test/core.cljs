@@ -2,7 +2,7 @@
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
-   [cljs.core.async :refer [put! chan <!]]
+   [cljs.core.async :refer [put! chan <! timeout]]
    [cljs.nodejs :as node]
    [possibledb.core :as pdb]
    ;; nodejs chai
@@ -106,14 +106,14 @@
                 {:load-config pdb/config-file})
           
           ;; waiting
+          
           (<! pdb/ch-ready)
                       
           (e "sub pub-main :load-config"
              :to.equal
              false
              (nil?
-              (:rethinkdb-config
-               (deref pdb/app))))
+              (:rethinkdb-config @pdb/app)))
 
           (e "rethinkdb-config [] fn"
              :to.equal
@@ -147,5 +147,17 @@
              (pdb/rethinkdb-safe-error? "Table-or-something already exists"))
               
 
+          ;; TODO
+          
+          (try
+            (-> @pdb/app
+                :rethinkdb-conn
+                (.close #js {:noreplyWait false}
+                        (fn [& _]
+                          ;; close handler
+                          )))
+            (catch js/Error ex ex))
           
           (results))))
+
+
