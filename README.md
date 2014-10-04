@@ -1,7 +1,7 @@
-![logo.png](possibledb/logo.png)
-
 PossibleDB
 ==========
+
+![logo.png](possibledb/logo.png)
 
 PossibleDB is a Database Server built with DataScript, RethinkDB, Clojure, ClojureScript, and NodeJS.
 
