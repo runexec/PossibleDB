@@ -58,7 +58,8 @@ All releases are located [here](https://github.com/runexec/PossibleDB/releases)
 
 (db/q
  "Same q call as in DataScript"
- [^:String db-name])
+ [^:String db-name
+  query-coll])
 
 (db/transact!
  "Same transact! call as in DataScript"
