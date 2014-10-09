@@ -63,7 +63,8 @@ All releases are located [here](https://github.com/runexec/PossibleDB/releases)
 
 (db/transact!
  "Same transact! call as in DataScript"
- [^:String db-name])
+ [^:String db-name
+  data-coll])
 
 (db/create-db!
  "Create a PossibleDB db. If schema, same as DataScript."
