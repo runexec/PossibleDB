@@ -3,6 +3,8 @@ PossibleDB
 
 ![logo.png](possibledb/logo.png)
 
+NOTE: This is being rewritten.
+
 PossibleDB is a Database Server built with DataScript, RethinkDB, Clojure, ClojureScript, and NodeJS.
 
 *WARNING: HIGHLY ALPHA*
