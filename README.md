@@ -25,9 +25,11 @@ PossibleDB is a Database Server built with DataScript, RethinkDB, Clojure, Cloju
 
 3)```npm install rethinkdb```
 
-4)```chmod +x possibledb.js```
+4) ```rethinkdb``` (in another terminal)
 
-5)```./possibledb.js {optional port}```
+5)```chmod +x possibledb.js```
+
+6)```./possibledb.js {optional port}```
 
 
 ## Releases
@@ -49,7 +51,7 @@ All releases are located [here](https://github.com/runexec/PossibleDB/releases)
 (:require [possibledb-client.core :as db])
 
 (db/connect!
- "Connect to a PossibleDB server"
+ "Connect to a PossibleDB server (String host Integer port)"
  [host port])
 
 (db/get
