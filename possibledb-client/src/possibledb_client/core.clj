@@ -9,7 +9,7 @@
   (java.net.Socket. host port))
 
 (defn connect!
-  "Connect to a PossibleDB server"
+  "Connect to a PossibleDB server (String host Integer port)"
   [host port]
   (reset! reload-conn [host port])
   (reset! connection
